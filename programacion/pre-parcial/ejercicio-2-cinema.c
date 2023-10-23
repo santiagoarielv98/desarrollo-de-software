@@ -9,9 +9,6 @@ int main(int argc, char *argv[])
     Hollycinema, una empresa que cuenta con salas de cine desea una aplicación para poder obtener
     resultados de las películas que proyecta.
 
-    Introducción a la programación
-    Instituto Leopoldo Marechal
-
     En la actualidad proyecta cuatro películas:
       1- Corazón de León.
       2-El conjuro.

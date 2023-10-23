@@ -2,3 +2,6 @@
 **/*.txt
 
 **/*.exe
+**/*.dll
+**/presentacion/**
+**/*.jpeg
