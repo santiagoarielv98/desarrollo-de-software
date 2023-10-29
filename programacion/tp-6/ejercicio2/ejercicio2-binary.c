@@ -17,7 +17,7 @@
         1) Agregar cliente.
         2) Ver datos de todos los clientes.
 
-    El programa trabajará con un archivo (clientes.txt por ejemplo) que debe crear
+    El programa trabajará con un archivo (clientes.mio por ejemplo) que debe crear
     la primera vez que se ejecute el programa.
 */
 
@@ -29,7 +29,7 @@ int main()
     FILE *archivo;
     int opcion;
 
-    archivo = fopen("clientes.txt", "a+");
+    archivo = fopen("clientes.mio", "a+b");
     if (archivo == NULL)
     {
         printf("No se pudo abrir el archivo.\n");
@@ -78,7 +78,10 @@ void agregar_cliente(FILE *archivo)
     printf("Ingrese el estado de pagos: ");
     scanf("%f", &estado_pagos);
 
-    fprintf(archivo, "%s %s %d %f\n", nombre, direccion, telefono, estado_pagos);
+    fwrite(nombre, sizeof(char), 50, archivo);
+    fwrite(direccion, sizeof(char), 100, archivo);
+    fwrite(&telefono, sizeof(int), 1, archivo);
+    fwrite(&estado_pagos, sizeof(float), 1, archivo);
 }
 
 void ver_clientes(FILE *archivo)
@@ -89,10 +92,13 @@ void ver_clientes(FILE *archivo)
     float estado_pagos;
 
     rewind(archivo);
-    while (
-        !feof(archivo))
+
+    while (fread(nombre, sizeof(char), 50, archivo) == 50)
     {
-        fscanf(archivo, "%s %s %d %f\n", nombre, direccion, &telefono, &estado_pagos) != EOF;
+        fread(direccion, sizeof(char), 100, archivo);
+        fread(&telefono, sizeof(int), 1, archivo);
+        fread(&estado_pagos, sizeof(float), 1, archivo);
+
         printf("Nombre: %s\n", nombre);
         printf("Direccion: %s\n", direccion);
         printf("Telefono: %d\n", telefono);
