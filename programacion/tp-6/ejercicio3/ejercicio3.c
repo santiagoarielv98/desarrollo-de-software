@@ -16,7 +16,6 @@
 */
 
 void cargarNumeros(int numeros[], int cantidad);
-void mostrarNumeros(int numeros[], int cantidad);
 void guardarNumeros(int numeros1[], int numeros2[], int cantidad);
 
 int main()
@@ -24,11 +23,10 @@ int main()
     int numeros1[10];
     int numeros2[10];
 
+    printf("vector 1\n");
     cargarNumeros(numeros1, 10);
+    printf("vector 2\n");
     cargarNumeros(numeros2, 10);
-
-    mostrarNumeros(numeros1, 10);
-    mostrarNumeros(numeros2, 10);
 
     guardarNumeros(numeros1, numeros2, 10);
 
@@ -37,24 +35,11 @@ int main()
 
 void cargarNumeros(int numeros[], int cantidad)
 {
-    int i;
-
-    for (i = 0; i < cantidad; i++)
+    for (int i = 0; i < cantidad; i++)
     {
-        printf("Ingrese un numero: ");
+        printf("Ingrese numero %d: ", i + 1);
         scanf("%d", &numeros[i]);
     }
-}
-
-void mostrarNumeros(int numeros[], int cantidad)
-{
-    int i;
-
-    for (i = 0; i < cantidad; i++)
-    {
-        printf("%d ", numeros[i]);
-    }
-    printf("\n");
 }
 
 void guardarNumeros(int numeros1[], int numeros2[], int cantidad)
@@ -66,6 +51,7 @@ void guardarNumeros(int numeros1[], int numeros2[], int cantidad)
     int mayor;
 
     archivo = fopen("resultado.txt", "w");
+
     if (archivo != NULL)
     {
 
@@ -95,6 +81,9 @@ void guardarNumeros(int numeros1[], int numeros2[], int cantidad)
 
         fclose(archivo);
     }
-    printf("No se pudo abrir el archivo.\n");
+    else
+    {
+        printf("No se pudo abrir el archivo.\n");
+    }
     return;
 }
