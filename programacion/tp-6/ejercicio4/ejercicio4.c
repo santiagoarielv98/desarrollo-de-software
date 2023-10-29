@@ -8,113 +8,119 @@
     Archivo 2 (datos ingresados por teclado): DNI, localidad, provincia.
     Archivo 3 (datos obtenidos por el programa): DNI, nombre, localidad, provincia.
     La carga de los dos primeros archivos finaliza con DNI=0.
+    TXT
 */
 
-void cargarArchivo1(FILE *archivo);
-void cargarArchivo2(FILE *archivo);
-void combinarArchivos(FILE *archivo1, FILE *archivo2, FILE *archivo3);
-
-int main(int argc, char const *argv[])
+typedef struct
 {
-    FILE *archivo1, *archivo2, *archivo3;
+    char nombre[30];
+    int dni;
+    int telefono;
+} Persona;
 
-    archivo1 = fopen("archivo1", "w");
-    archivo2 = fopen("archivo2", "w");
-    archivo3 = fopen("archivo3", "w");
+typedef struct
+{
+    int dni;
+    char localidad[30];
+    char provincia[30];
+} Domicilio;
 
-    if (archivo1 != NULL && archivo2 != NULL && archivo3 != NULL)
+void cargarArchivoPersonas(FILE *archivoPersonas);
+void cargarArchivoDomicilios(FILE *archivoDomicilios);
+void combinarArchivos(FILE *archivoPersonas, FILE *archivoDomicilios, FILE *archivoCombinado);
+
+int main()
+{
+    FILE *archivoPersonas;
+    FILE *archivoDomicilios;
+    FILE *archivoCombinado;
+
+    archivoPersonas = fopen("personas.txt", "w");
+    archivoDomicilios = fopen("domicilios.txt", "w");
+    archivoCombinado = fopen("combinado.txt", "w");
+
+    if (archivoPersonas == NULL || archivoDomicilios == NULL || archivoCombinado == NULL)
     {
-        cargarArchivo1(archivo1);
-        cargarArchivo2(archivo2);
-        combinarArchivos(archivo1, archivo2, archivo3);
+        printf("Error al abrir los archivos.");
+        exit(EXIT_FAILURE);
+    }
 
-        fclose(archivo1);
-        fclose(archivo2);
-        fclose(archivo3);
-    }
-    else
-    {
-        printf("No se pudo abrir alguno de los archivos\n");
-    }
+    cargarArchivoPersonas(archivoPersonas);
+    cargarArchivoDomicilios(archivoDomicilios);
+    combinarArchivos(archivoPersonas, archivoDomicilios, archivoCombinado);
+
+    fclose(archivoPersonas);
+    fclose(archivoDomicilios);
+    fclose(archivoCombinado);
 
     return 0;
 }
 
-void cargarArchivo1(FILE *archivo)
+void cargarArchivoPersonas(FILE *archivoPersonas)
 {
-    char nombre[20];
-    int dni;
-    int telefono;
+    Persona persona;
 
-    printf("Ingrese DNI: ");
-    scanf("%d", &dni);
+    printf("Ingrese el DNI de la persona: ");
+    scanf("%d", &persona.dni);
 
-    while (dni != 0)
+    while (persona.dni != 0)
     {
-        printf("Ingrese el nombre: ");
-        scanf("%s", nombre);
-        printf("Ingrese el teléfono: ");
-        scanf("%d", &telefono);
-        fprintf(archivo, "%s %d %d\n", nombre, dni, telefono);
 
-        printf("Ingrese DNI: ");
-        scanf("%d", &dni);
+        printf("Ingrese el nombre de la persona: ");
+        scanf("%s", persona.nombre);
+
+        printf("Ingrese el telefono de la persona: ");
+        scanf("%d", &persona.telefono);
+
+        fprintf(archivoPersonas, "%s %d %d\n", persona.nombre, persona.dni, persona.telefono);
+
+        printf("Ingrese el DNI de la persona: ");
+        scanf("%d", &persona.dni);
     }
 }
 
-void cargarArchivo2(FILE *archivo)
+void cargarArchivoDomicilios(FILE *archivoDomicilios)
 {
-    int dni;
-    char localidad[20];
-    char provincia[20];
+    Domicilio domicilio;
 
-    printf("Ingrese el DNI: ");
-    scanf("%d", &dni);
+    printf("Ingrese el DNI del domicilio: ");
+    scanf("%d", &domicilio.dni);
 
-    while (dni != 0)
+    while (domicilio.dni != 0)
     {
-        printf("Ingrese la localidad: ");
-        scanf("%s", localidad);
-        printf("Ingrese la provincia: ");
-        scanf("%s", provincia);
-        fprintf(archivo, "%d %s %s\n", dni, localidad, provincia);
+        printf("Ingrese la localidad del domicilio: ");
+        scanf("%s", domicilio.localidad);
 
-        printf("Ingrese el DNI: ");
-        scanf("%d", &dni);
+        printf("Ingrese la provincia del domicilio: ");
+        scanf("%s", domicilio.provincia);
+
+        fprintf(archivoDomicilios, "%d %s %s\n", domicilio.dni, domicilio.localidad, domicilio.provincia);
+
+        printf("Ingrese el DNI del domicilio: ");
+        scanf("%d", &domicilio.dni);
     }
 }
 
-void combinarArchivos(FILE *archivo1, FILE *archivo2, FILE *archivo3)
+void combinarArchivos(FILE *archivoPersonas, FILE *archivoDomicilios, FILE *archivoCombinado)
 {
-    char nombre[20];
-    int personaDni;
-    int telefono;
+    Persona persona;
+    Domicilio domicilio;
 
-    int domicilioDni;
-    char localidad[20];
-    char provincia[20];
+    rewind(archivoPersonas);
+    rewind(archivoDomicilios);
 
-    rewind(archivo1);
-    rewind(archivo2);
+    fscanf(archivoPersonas, "%s %d %d\n", persona.nombre, &persona.dni, &persona.telefono);
+    fscanf(archivoDomicilios, "%d %s %s\n", &domicilio.dni, domicilio.localidad, domicilio.provincia);
 
-    fscanf(archivo1, "%s %d %d\n", nombre, &personaDni, &telefono);
-    fscanf(archivo2, "%d %s %s\n", &domicilioDni, localidad, provincia);
-
-    while (personaDni != 0 && domicilioDni != 0)
+    while (fscanf(archivoPersonas, "%s %d %d\n", persona.nombre, &persona.dni, &persona.telefono) != EOF)
     {
-        if (personaDni == domicilioDni)
+        while (fscanf(archivoDomicilios, "%d %s %s\n", &domicilio.dni, domicilio.localidad, domicilio.provincia) != EOF)
         {
-            fprintf(archivo3, "%d %s %s %s\n", personaDni, nombre, localidad, provincia);
-            fscanf(archivo1, "%s %d %d\n", nombre, &personaDni, &telefono);
-            fscanf(archivo2, "%d %s %s\n", &domicilioDni, localidad, provincia);
+            if (persona.dni == domicilio.dni)
+            {
+                fprintf(archivoCombinado, "%d %s %s %s\n", persona.dni, persona.nombre, domicilio.localidad, domicilio.provincia);
+            }
         }
-        else if (personaDni < domicilioDni)
-        {
-            fscanf(archivo1, "%s %d %d\n", nombre, &personaDni, &telefono);
-        }
-        else
-        {
-            fscanf(archivo2, "%d %s %s\n", &domicilioDni, localidad, provincia);
-        }
+        rewind(archivoPersonas);
     }
 }
