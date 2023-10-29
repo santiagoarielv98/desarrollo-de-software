@@ -17,9 +17,3 @@
     generar un archivo en el que se carguen los siguientes datos.
     Nombre de película fecha cant. de entradas vendidas
 */
-
-int main(int argc, char const *argv[])
-{
-    /* code */
-    return 0;
-}

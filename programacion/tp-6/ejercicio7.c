@@ -19,9 +19,3 @@
     Búsquedas generales consta de encontrar todos los alumnos de una misma
     carrera y todos los alumnos con nota mayor o igual a 4 ó con nota menor 4.
 */
-
-int main(int argc, char const *argv[])
-{
-    /* code */
-    return 0;
-}

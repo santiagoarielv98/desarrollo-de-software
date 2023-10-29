@@ -15,8 +15,38 @@
     por el código de producto ó sea ver[0]=&quot;bife&quot;, ver[1]=&quot;lomo&quot;, ver[2]=&quot;nalga ...
 */
 
-int main(int argc, char const *argv[])
+int main()
 {
-    /* code */
+    FILE *archivo;
+    char cod_prod[10];
+    char producto[10];
+    char peso[10];
+    char ver[10][10];
+    int i = 0;
+
+    archivo = fopen("productos.txt", "r");
+
+    if (archivo != NULL)
+    {
+
+        while (!feof(archivo))
+        {
+            fscanf(archivo, "%s %s %s", cod_prod, producto, peso);
+            printf("%s %s %s\n", cod_prod, producto, peso);
+            strcpy(ver[i], producto);
+            i++;
+        }
+
+        fclose(archivo);
+
+        for (i = 0; i < 5; i++)
+        {
+            printf("%s\n", ver[i]);
+        }
+    }
+    else
+    {
+        printf("No se pudo abrir el archivo\n");
+    }
     return 0;
 }

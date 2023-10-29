@@ -10,22 +10,22 @@
 int main(int argc, char const *argv[])
 {
     FILE *archivo;
-    char c;
+
+    char caracter;
 
     archivo = fopen("prueba.txt", "r");
 
     if (archivo != NULL)
     {
-        while ((c = fgetc(archivo)) != EOF)
+        while ((caracter = fgetc(archivo)) != EOF)
         {
-            putchar(c);
+            putchar(caracter);
         }
-
         fclose(archivo);
     }
     else
     {
-        printf("No se pudo abrir el archivo\n");
+        printf("No se pudo abrir el archivo");
     }
 
     return 0;

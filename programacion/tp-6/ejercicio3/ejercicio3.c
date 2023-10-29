@@ -15,50 +15,86 @@
     Suma y Multi pueden ser iguales, es ese caso Leyenda = iguales.
 */
 
-int main(int argc, char const *argv[])
+void cargarNumeros(int numeros[], int cantidad);
+void mostrarNumeros(int numeros[], int cantidad);
+void guardarNumeros(int numeros1[], int numeros2[], int cantidad);
+
+int main()
+{
+    int numeros1[10];
+    int numeros2[10];
+
+    cargarNumeros(numeros1, 10);
+    cargarNumeros(numeros2, 10);
+
+    mostrarNumeros(numeros1, 10);
+    mostrarNumeros(numeros2, 10);
+
+    guardarNumeros(numeros1, numeros2, 10);
+
+    return 0;
+}
+
+void cargarNumeros(int numeros[], int cantidad)
+{
+    int i;
+
+    for (i = 0; i < cantidad; i++)
+    {
+        printf("Ingrese un numero: ");
+        scanf("%d", &numeros[i]);
+    }
+}
+
+void mostrarNumeros(int numeros[], int cantidad)
+{
+    int i;
+
+    for (i = 0; i < cantidad; i++)
+    {
+        printf("%d ", numeros[i]);
+    }
+    printf("\n");
+}
+
+void guardarNumeros(int numeros1[], int numeros2[], int cantidad)
 {
     FILE *archivo;
-    int num1[10], num2[10], suma[10], multi[10], mayor[10], i;
+    int i;
+    int suma;
+    int multi;
+    int mayor;
 
-    for (i = 0; i < 10; i++)
-    {
-        printf("Ingrese el valor %d del vector 1: ", i + 1);
-        scanf("%d", &num1[i]);
-        printf("Ingrese el valor %d del vector 2: ", i + 1);
-        scanf("%d", &num2[i]);
-        printf("\n");
-        suma[i] = num1[i] + num2[i];
-        multi[i] = num1[i] * num2[i];
-        mayor[i] = suma[i] > multi[i] ? suma[i] : multi[i];
-    }
-
-    archivo = fopen("RESULTADO", "w");
-
+    archivo = fopen("resultado.txt", "w");
     if (archivo != NULL)
     {
-        fprintf(archivo, "Numero 1     Numero 2     Suma         Multi        Mayor\n");
-        fprintf(archivo, "__________________________________________________________\n");
 
-        for (i = 0; i < 10; i++)
+        fprintf(archivo, "Numero 1\tNumero 2\tSuma\tMulti\tMayor\n");
+        fprintf(archivo, "_________________________________________________\n");
+
+        for (i = 0; i < cantidad; i++)
         {
-            fprintf(archivo, "%-11d  %-11d  %-11d  %-11d  ", num1[i], num2[i], suma[i], multi[i]);
-
-            if (suma[i] == multi[i])
+            suma = numeros1[i] + numeros2[i];
+            multi = numeros1[i] * numeros2[i];
+            if (suma > multi)
             {
-                fprintf(archivo, "iguales\n");
+                mayor = suma;
+                fprintf(archivo, "%d\t\t%d\t\t%d\t%d\tSuma\n", numeros1[i], numeros2[i], suma, multi);
+            }
+            else if (suma < multi)
+            {
+                mayor = multi;
+                fprintf(archivo, "%d\t\t%d\t\t%d\t%d\tMulti\n", numeros1[i], numeros2[i], suma, multi);
             }
             else
             {
-                fprintf(archivo, "%s\n", suma[i] > multi[i] ? "suma" : "multi");
+                mayor = suma;
+                fprintf(archivo, "%d\t\t%d\t\t%d\t%d\tIguales\n", numeros1[i], numeros2[i], suma, multi);
             }
         }
 
         fclose(archivo);
     }
-    else
-    {
-        printf("No se pudo abrir el archivo\n");
-    }
-
-    return 0;
+    printf("No se pudo abrir el archivo.\n");
+    return;
 }
