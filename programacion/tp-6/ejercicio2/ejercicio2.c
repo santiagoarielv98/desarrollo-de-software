@@ -92,7 +92,7 @@ void ver_clientes(FILE *archivo)
     while (
         !feof(archivo))
     {
-        fscanf(archivo, "%s %s %d %f\n", nombre, direccion, &telefono, &estado_pagos) != EOF;
+        fscanf(archivo, "%s %s %d %f\n", nombre, direccion, &telefono, &estado_pagos);
         printf("Nombre: %s\n", nombre);
         printf("Direccion: %s\n", direccion);
         printf("Telefono: %d\n", telefono);
